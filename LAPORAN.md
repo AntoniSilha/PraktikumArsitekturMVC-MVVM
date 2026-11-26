@@ -80,7 +80,7 @@ flutter test
 flutter analyze
 ```
 
-Project menggunakan dependency Flutter standar dan `flutter_test`. README starter menyebutkan Flutter 3.29.2; pastikan Flutter SDK yang digunakan kompatibel dengan batas SDK pada `pubspec.yaml`.
+Project menggunakan dependency Flutter standar dan `flutter_test`. README starter mencantumkan Flutter 3.29.2, sedangkan screenshot persiapan pada perangkat praktikum memperlihatkan Flutter 3.47.1 (`bukti/MenjalankanPersiapanPraktikum.png`). Project memiliki batas Dart SDK `^3.7.2` pada `pubspec.yaml`; gunakan Flutter SDK yang memenuhi batas tersebut.
 
 ## 5. Tabel Perbandingan MVC dan MVVM
 
@@ -101,7 +101,7 @@ Pada kedua pola, `PanelTugas` menampilkan `FilterChip` dan meneruskan aksi melal
 |---|---|---|
 | Pemicu rebuild | `setState()` pada `State<LayarMvc>`, khususnya pada callback filter dan metode `_ubahStatus()`. | `notifyListeners()` pada `TugasViewModel`, yang didengarkan oleh `ListenableBuilder`. |
 | Jika pemicu dihapus | Perubahan state di `PengendaliTugas` tetap dapat terjadi, tetapi `LayarMvc` tidak otomatis membangun ulang tampilan. Daftar atau status checkbox dapat tetap menampilkan kondisi lama sampai ada rebuild lain. | Perubahan data di repository/ViewModel tetap dapat terjadi, tetapi widget yang mendengarkan ViewModel tidak diberi notifikasi. Ringkasan atau checkbox dapat tetap menampilkan kondisi lama. |
-| Hasil percobaan yang tersedia | Kode MVC saat ini telah mengembalikan `setState()`. Arsip bukti yang disertakan belum memuat hasil percobaan ketika `setState()` MVC dihapus sementara. Langkah uji MVC dijelaskan setelah tabel ini dan perlu dijalankan serta didokumentasikan jika diminta bukti percobaan untuk kedua versi. | Pada bukti `bukti/afterDisable-notifylisteners.png`, setelah `notifyListeners()` pada `TugasViewModel.ubahStatus()` dihapus sementara, `flutter test test/layar_test.dart` gagal pada pemeriksaan **1 dari 1 selesai** karena teks yang diharapkan tidak ditemukan. Setelah baris notifikasi dikembalikan, bukti `bukti/rollbackActive-NotifyListeners.png` menunjukkan **2 test lulus**. |
+| Hasil percobaan yang tersedia | Kode MVC saat ini telah mengembalikan `setState()`. Arsip bukti yang disertakan belum memuat hasil percobaan ketika `setState()` MVC dihapus sementara. Langkah uji MVC dijelaskan setelah tabel ini dan perlu dijalankan serta didokumentasikan jika diminta bukti percobaan untuk kedua versi. | Pada screenshot [bukti/afterDisable-notifylisteners.png](bukti/afterDisable-notifylisteners.png), setelah `notifyListeners()` pada `TugasViewModel.ubahStatus()` dihapus sementara, `flutter test test/layar_test.dart` gagal pada pemeriksaan **1 dari 1 selesai** karena teks yang diharapkan tidak ditemukan. Setelah baris notifikasi dikembalikan, screenshot [bukti/rollbackActive-NotifyListeners.png](bukti/rollbackActive-NotifyListeners.png) menunjukkan **2 test lulus**. |
 
 **Langkah percobaan MVC untuk melengkapi bukti:**
 
@@ -146,7 +146,7 @@ File `test/filter_test.dart` menjalankan widget test untuk MVC dan MVVM. Setiap 
 5. Menonaktifkan filter dan memastikan kedua tugas muncul kembali serta status tugas pertama tetap tercentang.
 6. Mengaktifkan filter kembali, menyelesaikan tugas kedua, lalu memastikan pesan **Tidak ada tugas yang belum selesai.** muncul sementara ringkasan tetap **2 dari 2 selesai**.
 
-Berdasarkan screenshot hasil pengujian yang disertakan dalam folder `bukti`, hasilnya adalah:
+Berdasarkan screenshot [bukti/FlutterTest&AnalyzeFilter.png](bukti/FlutterTest&AnalyzeFilter.png), hasil pengujian filter dan analisis kode adalah:
 
 | Perintah | Hasil pada bukti |
 |---|---|
@@ -154,10 +154,58 @@ Berdasarkan screenshot hasil pengujian yang disertakan dalam folder `bukti`, has
 | `flutter test test/filter_test.dart` | `+2: All tests passed!` — kedua widget test filter lulus. |
 | `flutter test` | `+7: All tests passed!` — seluruh tujuh test lulus. |
 
-Bukti hasil tersebut terdapat pada `bukti/FlutterTest&AnalyzeFilter.png`. Bukti percobaan penghapusan dan pemulihan notifikasi MVVM terdapat pada `bukti/afterDisable-notifylisteners.png` dan `bukti/rollbackActive-NotifyListeners.png`.
+Rangkaian bukti pengujian dan tampilan setiap versi dituliskan satu per satu pada Bagian 7, termasuk path relatif setiap file gambar agar dapat dibuka langsung dari repository.
 
-## 7. Kesimpulan
+## 7. Dokumentasi Bukti Screenshot
+
+Semua tautan di bawah menggunakan **path relatif dari lokasi `LAPORAN.md`**. Karena file laporan berada di root project dan screenshot berada di dalam `bukti/`, path dapat dibuka langsung melalui tautan pada GitHub atau editor Markdown. Setiap bukti ditunjukkan sampai nama file gambarnya.
+
+### 7.1 Persiapan, menjalankan aplikasi, dan pengujian umum
+
+| No. | Bukti screenshot | Keterangan |
+|---|---|---|
+| 1 | [bukti/MenjalankanPersiapanPraktikum.png](bukti/MenjalankanPersiapanPraktikum.png) | Menjalankan `flutter pub get`, test awal, dan menampilkan versi Flutter 3.47.1. |
+| 2 | [bukti/FlutterRun.png](bukti/FlutterRun.png) | Menjalankan aplikasi menggunakan `flutter run -d chrome`. |
+| 3 | [bukti/FlutterLogikaTest.png](bukti/FlutterLogikaTest.png) | Hasil menjalankan `flutter test test/logika_test.dart`; dua test logika lulus. |
+| 4 | [bukti/FlutterTest&AnalyzeBawaan.png](bukti/FlutterTest&AnalyzeBawaan.png) | Hasil pemeriksaan awal: `flutter analyze` tanpa masalah dan lima test lulus. |
+| 5 | [bukti/FlutterTest&AnalyzePemanasanTugas.png](bukti/FlutterTest&AnalyzePemanasanTugas.png) | Hasil pemeriksaan setelah tugas pemanasan: analisis tanpa masalah dan lima test lulus. |
+| 6 | [bukti/FlutterTest&AnalyzeFilter.png](bukti/FlutterTest&AnalyzeFilter.png) | Hasil akhir fitur filter: `flutter analyze` tanpa masalah, dua test filter lulus, dan seluruh tujuh test lulus. |
+
+### 7.2 Bukti tampilan dan interaksi MVC
+
+| No. | Bukti screenshot | Keterangan |
+|---|---|---|
+| 1 | [bukti/MVC/PesanValidasiInput.png](bukti/MVC/PesanValidasiInput.png) | Tampilan pesan validasi input pada halaman MVC. |
+| 2 | [bukti/MVC/PengisianBenarVersiNoCheckList.png](bukti/MVC/PengisianBenarVersiNoCheckList.png) | Dua tugas ditampilkan pada MVC dalam keadaan belum dicentang; ringkasan 0 dari 2 selesai. |
+| 3 | [bukti/MVC/PengisianYgBenarChecklist1.png](bukti/MVC/PengisianYgBenarChecklist1.png) | Satu dari dua tugas dicentang; ringkasan 1 dari 2 selesai. |
+| 4 | [bukti/MVC/PengisianYgBenarChecklist2.png](bukti/MVC/PengisianYgBenarChecklist2.png) | Kedua tugas dicentang; ringkasan 2 dari 2 selesai. |
+| 5 | [bukti/MVC/filter/PengisianNoFilter.png](bukti/MVC/filter/PengisianNoFilter.png) | Filter MVC tidak aktif; kedua tugas masih terlihat. |
+| 6 | [bukti/MVC/filter/PengisianFilter.png](bukti/MVC/filter/PengisianFilter.png) | Filter MVC aktif; hanya tugas yang belum selesai terlihat, sedangkan ringkasan tetap 1 dari 2 selesai. |
+
+### 7.3 Bukti tampilan dan interaksi MVVM
+
+| No. | Bukti screenshot | Keterangan |
+|---|---|---|
+| 1 | [bukti/MVVM/PesanValidasiInput.png](bukti/MVVM/PesanValidasiInput.png) | Tampilan pesan validasi input pada halaman MVVM. |
+| 2 | [bukti/MVVM/PengisianBenarVersiNoChecklList.png](bukti/MVVM/PengisianBenarVersiNoChecklList.png) | Dua tugas ditampilkan pada MVVM dalam keadaan belum dicentang; ringkasan 0 dari 2 selesai. |
+| 3 | [bukti/MVVM/PengisianYgBenarChecklist1.png](bukti/MVVM/PengisianYgBenarChecklist1.png) | Satu dari dua tugas dicentang; ringkasan 1 dari 2 selesai. |
+| 4 | [bukti/MVVM/PengisianYgBenarChecklist2.png](bukti/MVVM/PengisianYgBenarChecklist2.png) | Kedua tugas dicentang; ringkasan 2 dari 2 selesai. |
+| 5 | [bukti/MVVM/filter/PengisianNoFilter.png](bukti/MVVM/filter/PengisianNoFilter.png) | Filter MVVM tidak aktif; kedua tugas masih terlihat. |
+| 6 | [bukti/MVVM/filter/PengisianFilter.png](bukti/MVVM/filter/PengisianFilter.png) | Filter MVVM aktif; hanya tugas yang belum selesai terlihat, sedangkan ringkasan tetap 1 dari 2 selesai. |
+
+### 7.4 Bukti percobaan pemicu rebuild
+
+| Tahap | Bukti screenshot | Keterangan |
+|---|---|---|
+| Sebelum pemicu dipulihkan | [bukti/afterDisable-notifylisteners.png](bukti/afterDisable-notifylisteners.png) | `notifyListeners()` pada `TugasViewModel.ubahStatus()` dihapus sementara. Test MVVM gagal karena teks ringkasan 1 dari 1 selesai tidak ditemukan. |
+| Setelah pemicu dipulihkan | [bukti/rollbackActive-NotifyListeners.png](bukti/rollbackActive-NotifyListeners.png) | `notifyListeners()` dikembalikan; `flutter test test/layar_test.dart` menunjukkan dua test lulus. |
+
+**Catatan bukti MVC:** Di dalam arsip project yang diperiksa belum terdapat screenshot percobaan ketika `setState()` pada `LayarMvc` dihapus sementara. Karena itu, bukti visual untuk percobaan MVC belum dapat dicantumkan. Untuk melengkapinya, lakukan langkah percobaan pada Bagian 5.2, ambil screenshot hasil test ketika `setState()` dihapus, lalu ambil screenshot setelah `setState()` dipulihkan. Simpan kedua gambar di folder `bukti/` dan tambahkan nama file spesifiknya pada tabel ini.
+
+## 8. Kesimpulan
 
 Fitur Filter Belum selesai berhasil diterapkan pada kedua pola arsitektur. Pilihan filter disimpan pada `PengendaliTugas` untuk MVC dan `TugasViewModel` untuk MVVM. Daftar yang ditampilkan disaring melalui `daftarTerlihat`, tetapi repository tetap menyimpan seluruh tugas. Karena ringkasan menggunakan jumlah selesai dan total dari daftar lengkap, angka ringkasan tidak berubah hanya karena filter diaktifkan.
 
 Perbedaan utama kedua pola terlihat pada mekanisme pembaruan UI. MVC menggunakan `setState()` pada layar, sedangkan MVVM menggunakan `notifyListeners()` pada ViewModel yang didengarkan oleh `ListenableBuilder`. Berdasarkan bukti yang tersedia, dua test filter dan seluruh tujuh test project lulus, serta `flutter analyze` tidak menemukan masalah. Percobaan penghapusan `setState()` pada MVC masih perlu direkam secara terpisah untuk melengkapi bukti eksperimen kedua pola.
+
+Path screenshot pada laporan ini bersifat relatif. Pertahankan struktur folder `bukti/` beserta seluruh subfolder dan file PNG-nya di lokasi yang sama dengan `LAPORAN.md` agar tautan tetap berfungsi.
